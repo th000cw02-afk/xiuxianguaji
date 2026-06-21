@@ -75,7 +75,11 @@ assets/
 
 | 文档 | 说明 |
 |------|------|
-| [ARCHITECTURE.md](ARCHITECTURE.md) | 架构与数据流 |
+| [文字修仙定位.md](文字修仙定位.md) | 框架定位与 Fork 场景 |
+| [GAME_SYSTEMS.md](GAME_SYSTEMS.md) | 系统全景 |
+| [二次创作指南.md](二次创作指南.md) | 换皮步骤 |
+| [ROADMAP.md](ROADMAP.md) | 版本规划 |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | 架构与 meta-systems |
 | [BUILD.md](BUILD.md) | 编译与环境配置 |
 | [游戏说明.txt](../app/src/main/assets/游戏说明.txt) | 游戏机制与公式 |
 | [随机数说明文档.md](../随机数说明文档.md) | 气运系数与随机数设计 |

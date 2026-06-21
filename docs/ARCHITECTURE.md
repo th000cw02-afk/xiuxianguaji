@@ -1,85 +1,88 @@
 # 架构说明
 
-《修仙挂机》采用 **WebView 壳 + JavaScript 游戏** 的混合架构：Android 原生层只负责容器与系统能力桥接，全部游戏逻辑运行在 WebView 内的 HTML/JS 中。
+《修仙挂机》是 **文字修仙** 开源框架下的修仙题材实例，采用 WebView 壳 + JavaScript 游戏架构。
 
 ## 整体架构
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    Android 原生层                        │
-│  MainActivity.kt                                        │
-│    ├── WebView（全屏加载 assets/index.html）             │
-│    └── WebAppInterface（JS 桥接，别名 AndroidInterface）│
+│              Android 原生层（现有 Gradle 工程）           │
+│  MainActivity.kt → WebView + AndroidInterface           │
 ├─────────────────────────────────────────────────────────┤
-│                    assets/ 游戏层                        │
-│  index.html  → 页面结构与 Tab 布局                       │
-│  game.js     → 全部游戏逻辑（~2 万行）                   │
-│  math.js     → math.js 高精度数学库                      │
-│  styles.css  → MUD 终端风格 UI                          │
+│              iOS 原生层（Capacitor，云端构建）            │
+│  WKWebView + NativeBridge 插件 → 垫片为 AndroidInterface │
+├─────────────────────────────────────────────────────────┤
+│         app/src/main/assets/ 游戏层（双端共享源）         │
+│  platform-bridge.js → 跨平台桥接垫片                     │
+│  theme/config.js    → 题材配置（境界名、Tab、文案池）    │
+│  theme/contracts.js → 天机阁契约模板                     │
+│  meta-systems.js    → 纪事 / 道果 / 天机阁               │
+│  game.js            → 核心数值与玩法（~2.3 万行）        │
+│  index.html / styles.css / math.js                      │
 └─────────────────────────────────────────────────────────┘
 ```
+
+Capacitor 构建时通过 `npm run sync:web` 将 assets 复制到 `www/`，再 `cap sync ios` 写入 `ios/App/App/public/`。
+
+## 脚本加载顺序
+
+```
+platform-bridge.js → theme/config.js → theme/contracts.js → math.js → game.js → meta-systems.js
+```
+
+`meta-systems.js` 依赖 `game.js` 的存档与 UI 函数，必须最后加载。
+
+## 元系统（meta-systems.js）
+
+| 模块 | 存档字段（主角） | 说明 |
+|------|------------------|------|
+| 修仙纪事 | `metaChronicle` | entries + titles |
+| 道果图鉴 | `metaAchievements` | unlocked id 列表 |
+| 进度计数 | `metaProgress` | 击杀、炼丹、契约等 |
+| 天机阁 | `metaTianjige` | 天机点、日/周契约 |
+
+触发钩子：`MetaSystems.onBreakthroughSuccess`、`onBattleWin`、`onAlchemySuccess` 等，由 `game.js` 在关键节点调用。
 
 ## 数据流
 
 ### 启动流程
 
-1. `MainActivity.onCreate()` 创建 WebView
-2. 配置 JavaScript、DOM Storage、文件访问等 WebSettings
-3. 注入 `AndroidInterface`（`WebAppInterface` 实例）
-4. 加载 `file:///android_asset/index.html`
-5. `index.html` 依次加载 `math.js`、`game.js`，初始化游戏
+1. WebView 加载 `index.html`
+2. 加载 theme → game → meta-systems
+3. `loadGameData()` → `MetaSystems.init()` → 各 UI 刷新
 
 ### 存档持久化
 
-- 游戏内数据通过 **`localStorage`** 存储（WebView 的 DOM Storage）
-- `game.js` 中的 `StorageCache` 提供读写缓存层
-- 支持多角色存档（最多 4 个化身）
+- 角色数据：`localStorage` + `StorageCache`
+- 全局共享（主角存档）：返虚路、本源、纪事/成就/天机阁
 
 ### 原生桥接（AndroidInterface）
 
-| JS 方法 | 用途 |
-|---------|------|
-| `downloadFile(base64, fileName, mimeType)` | 导出存档到 Downloads |
-| `pickFile(mimeType, onSuccess, onError)` | 选择并读取文本文件（导入存档） |
-| `pickImage(onSuccess, onError)` | 选择图片，返回 Base64 |
-| `pickMultipleImages(onSuccess, onError)` | 多选图片 |
-| `readFile(fileName)` | 从 assets 或 Downloads 读取文件 |
-| `showToast(message)` | 显示 Toast |
-| `setKeepScreenOn(boolean)` | 控制屏幕常亮 |
-| `getDeviceInfo()` | 返回 Android 版本信息 |
+- **Android**：[`MainActivity.kt`](../app/src/main/java/com/idle/wenzixiuxian/MainActivity.kt) 注入 `AndroidInterface`
+- **iOS**：[`platform-bridge.js`](../app/src/main/assets/platform-bridge.js) + [`plugins/native-bridge`](../plugins/native-bridge) 插件，挂载同名对象
+
+见 [DEVELOPMENT.md](DEVELOPMENT.md) 或 MainActivity 注释。
 
 ## 目录职责
 
 | 路径 | 职责 |
 |------|------|
-| `app/src/main/java/.../MainActivity.kt` | WebView 生命周期、文件选择、下载、返回键、Insets |
-| `app/src/main/assets/game.js` | 挂机/战斗/洞府/法则/内天地/存档等全部玩法 |
-| `app/src/main/assets/index.html` | UI 骨架与 Tab 容器 |
-| `app/src/main/assets/styles.css` | 终端风格样式 |
-| `app/src/main/AndroidManifest.xml` | 权限、Activity、FileProvider |
-| `app/build.gradle.kts` | 版本号、签名、混淆、依赖 |
+| `theme/config.js` | Fork 首选：产品名、境界、Tab、奇遇文案 |
+| `theme/contracts.js` | 天机阁日/周契与商店 |
+| `meta-systems.js` | 纪事、成就、天机阁逻辑 |
+| `game.js` | 修炼/战斗/洞府/内天地等核心玩法 |
+| `MainActivity.kt` | Android WebView 壳与 JS 桥接 |
+| `plugins/native-bridge/` | iOS Capacitor 原生桥接插件 |
+| `ios/` | Capacitor iOS 工程（Xcode） |
 
-## 技术选型说明
+## 二次创作
 
-- **为何用 WebView 而非 Compose 做游戏 UI？** 游戏 UI 为大量动态文本与 Tab 切换，HTML/CSS/JS 迭代更快；Compose 依赖主要用于 Activity 框架，实际界面由 WebView 渲染。
-- **为何引入 math.js？** 挂机游戏数值跨度大，需要高精度幂运算、对数等，`game.js` 封装了 `$evalBig`、`$pow` 等工具函数。
-- **单机无网络：** 除 WebView 内置能力外不发起网络请求；`INTERNET` 权限主要用于 WebView 兼容性。
-
-## 修改指南速查
-
-| 想改什么 | 改哪里 |
-|----------|--------|
-| 游戏玩法、数值、界面文字 | `assets/game.js`、`styles.css`、`index.html` |
-| 应用名、图标、权限 | `AndroidManifest.xml`、`res/` |
-| 存档导入导出、屏幕常亮 | `MainActivity.kt` / `WebAppInterface` |
-| 版本号 | `app/build.gradle.kts` |
-
-更详细的开发说明见 [DEVELOPMENT.md](DEVELOPMENT.md)。
+换皮只需改 `theme/`，详见 [二次创作指南.md](二次创作指南.md)。
 
 ## 相关文档
 
-- [构建指南](BUILD.md)
-- [开发指南](DEVELOPMENT.md)
-- [游戏机制说明](../app/src/main/assets/游戏说明.txt)
-- [随机数说明](../随机数说明文档.md)
-- [Math.random 使用分析](../Math.random使用情况分析.md)
+- [文字修仙定位.md](文字修仙定位.md)
+- [GAME_SYSTEMS.md](GAME_SYSTEMS.md)
+- [ROADMAP.md](ROADMAP.md)
+- [BUILD.md](BUILD.md)
+- [DEVELOPMENT.md](DEVELOPMENT.md)

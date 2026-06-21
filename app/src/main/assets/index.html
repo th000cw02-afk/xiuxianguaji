@@ -7,9 +7,11 @@
     <!-- 移动端视口设置，确保在手机上正确显示 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <!-- 页面标题 -->
-    <title>挂机修仙</title>
+    <title>修仙挂机</title>
     <!-- 引入样式表 -->
     <link rel="stylesheet" href="styles.css">
+    <!-- 跨平台原生桥接（Android WebView / iOS Capacitor） -->
+    <script src="platform-bridge.js"></script>
 </head>
 <body>
     <!-- 主容器：终端风格的界面布局 -->
@@ -82,6 +84,7 @@
             <!-- 修炼系统标签页 - 核心挂机修炼功能 -->
             <div class="tab-content active" id="tab-cultivate">
                 <div class="mod-box-3" id="Status-content2">
+                    <div class="mod-box-2" id="chronicle-panel" style="max-height:22%;overflow-y:auto;font-size:12px;"></div>
                     <div class="mod-box-2" id="cultivate-Status">
                     </div>
                     <div class="mod-box-2" id="cultivate-cultivateGF" style="height:auto;max-height:35%;">
@@ -153,6 +156,10 @@
                     <div class="mod-box-2" id="cheat-module" style="display:none;">
                         <div class="text-line" style="text-align:center;">【 作弊模块 】</div>
                         <div class="text-line">离线时长: <span id="cheat-offline">1</span>x <button onclick="changeOfflineMultiplier()" style="background:rgba(51,51,51,var(--terminal-opacity));color:var(--text-color,#fff);border:1px solid #666;padding:1px 6px;cursor:pointer;font-size:12px;">改</button></div>
+                    </div>
+                    <div class="mod-box-2">
+                        <div class="text-line" style="text-align:center;">【 文字修仙 】</div>
+                        <div class="text-line" style="margin-bottom:8px;"><button onclick="MetaSystems.showTianjigeModal()" style="background:rgba(51,51,51,var(--terminal-opacity));color:var(--text-color,#fff);border:1px solid #666;padding:4px 12px;cursor:pointer;font-size:14px;margin-right:6px;">天机阁</button><button onclick="MetaSystems.showDaoguoModal()" style="background:rgba(51,51,51,var(--terminal-opacity));color:var(--text-color,#fff);border:1px solid #666;padding:4px 12px;cursor:pointer;font-size:14px;">道果图鉴</button></div>
                     </div>
                     <div class="mod-box-2">
                         <div class="text-line" style="text-align:center;">【 背景图片设置 】</div>
@@ -306,7 +313,10 @@
         
         console.log('math.js 高精度数学库已加载，全局 Math 已替换');
     </script>
+    <script src="theme/config.js"></script>
+    <script src="theme/contracts.js"></script>
     <!-- 引入游戏主逻辑脚本 -->
     <script src="game.js"></script>
+    <script src="meta-systems.js"></script>
 </body>
 </html>

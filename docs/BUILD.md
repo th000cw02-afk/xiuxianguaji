@@ -1,8 +1,8 @@
 # 构建指南
 
-本文说明如何在本地编译《修仙挂机》Android 安装包（APK）。
+本文说明如何在本地编译《修仙挂机》Android 安装包（APK），以及如何通过 Capacitor 在云端构建 iOS 模拟器包。
 
-## 环境要求
+## Android 环境要求
 
 | 组件 | 版本要求 |
 |------|----------|
@@ -115,3 +115,68 @@ versionName = "1.73"  // 显示给用户的版本号
 ```
 
 修改后重新执行 `assembleRelease`。
+
+## CI 自动构建
+
+项目包含 GitHub Actions 工作流（[`.github/workflows/android-build.yml`](../.github/workflows/android-build.yml)），在 push/PR 时自动编译 Release APK 并上传为 Artifact。
+
+未配置仓库 Secrets 时，CI 会使用临时生成的签名密钥（仅供验证编译，不可用于正式发布）。正式发布请在仓库 Settings → Secrets 中配置：
+
+- `KEYSTORE_BASE64` — `keystore.jks` 的 Base64 编码
+- `KEYSTORE_PASSWORD` / `KEYSTORE_KEY_PASSWORD` / `KEYSTORE_KEY_ALIAS`
+
+---
+
+## iOS / Capacitor 构建
+
+iOS 无法在 Windows 上本地编译，需 **macOS + Xcode** 或 **GitHub Actions macOS runner**。项目采用 Capacitor 包装同一套 Web 资源，Android 仍使用现有 Gradle WebView 壳（双轨）。
+
+### 环境要求（本地 Mac 调试，可选）
+
+| 组件 | 版本要求 |
+|------|----------|
+| Node.js | 20+ |
+| Xcode | 15+ |
+| CocoaPods | 1.6+ |
+
+### Web 资源同步
+
+游戏源码仍在 `app/src/main/assets/`。iOS 构建前将资源复制到 Capacitor 的 `www/`：
+
+```powershell
+npm install
+npm run sync:web          # assets → www
+npm run ios:sync          # sync:web + cap sync ios
+```
+
+### 本地 Mac 打开 Xcode
+
+```bash
+npm run ios:open
+# 在 Xcode 中选择模拟器或真机运行
+```
+
+### iOS 原生桥接
+
+[`platform-bridge.js`](../app/src/main/assets/platform-bridge.js) 在 iOS 上将 Capacitor 插件 [`plugins/native-bridge`](../plugins/native-bridge) 挂载为 `AndroidInterface`，与 Android [`MainActivity.kt`](../app/src/main/java/com/idle/wenzixiuxian/MainActivity.kt) 行为对齐（存档导入/导出、屏幕常亮等）。
+
+### iOS CI 自动构建
+
+工作流 [`.github/workflows/ios-build.yml`](../.github/workflows/ios-build.yml) 在 push/PR 时：
+
+1. `npm ci` → `npm run ios:sync`
+2. `pod install`
+3. `xcodebuild` 编译 **iOS Simulator** 包（无需 Apple 签名）
+
+构建完成后，在 GitHub Actions 的 **Artifacts** 中下载 `ios-simulator-app`（`.app`  bundle，仅供模拟器验证编译）。
+
+### 真机 / App Store（Phase 2）
+
+需 Apple Developer 账号（$99/年）并在仓库 Secrets 中配置签名证书与描述文件。当前 CI 默认仅产出 Simulator 包。
+
+| Secret | 说明 |
+|--------|------|
+| `IOS_BUILD_CERTIFICATE_BASE64` | 分发证书 `.p12` 的 Base64 |
+| `IOS_P12_PASSWORD` | 证书密码 |
+| `IOS_PROVISIONING_PROFILE_BASE64` | 描述文件 Base64 |
+| `IOS_KEYCHAIN_PASSWORD` | 临时钥匙串密码 |

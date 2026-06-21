@@ -1,0 +1,21 @@
+{
+  "name": "xiuxianguaji",
+  "version": "1.73.0",
+  "private": true,
+  "description": "修仙挂机 — Capacitor iOS 构建与 Web 资源同步",
+  "scripts": {
+    "sync:web": "node scripts/sync-web.mjs",
+    "cap:sync": "npx cap sync",
+    "ios:sync": "npm run sync:web && npx cap sync ios",
+    "ios:open": "npx cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "^7.2.0",
+    "@capacitor/ios": "^7.2.0",
+    "native-bridge": "file:plugins/native-bridge"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.2.0",
+    "typescript": "^6.0.3"
+  }
+}

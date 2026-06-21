@@ -115,3 +115,7 @@ Thumbs.db
 # Local environment
 .env
 .env.local
+
+# Node / Capacitor
+node_modules/
+www/

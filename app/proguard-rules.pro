@@ -22,6 +22,11 @@
     public void set*(...);
 }
 
+# 保留 WebView JavaScript 桥接
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
 # 保留Compose相关的类
 -keep class androidx.compose.** { *; }
 -keep class kotlinx.coroutines.** { *; }

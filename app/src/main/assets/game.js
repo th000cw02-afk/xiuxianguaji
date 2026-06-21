@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿// ========================================
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿// ========================================
 // ⚠️ 警告：Math.random 已被重写！⚠️
 // ========================================
 // 原生 Math.random 已被自定义版本替换
@@ -1561,6 +1561,7 @@ function doAbsorbCharacter(charId) {
     updateBagUI();
     updateCharacterTagUI();
     updateAutoSettingsUI();
+    if (typeof MetaSystems !== 'undefined') MetaSystems.onCloneAbsorbed();
 }
 
 /**
@@ -1658,7 +1659,7 @@ function createNewCharacter(name, investBenZhi = 0, slotIndex = 0) {
     updateEquipmentUI();
     updateBagUI();
     updateCharacterTagUI();
-    
+    if (typeof MetaSystems !== 'undefined') MetaSystems.onCloneCreated();
     return { success: true, id: charId, name: name || '新角色' };
 }
 
@@ -2540,19 +2541,12 @@ const monsterData = [
 ];
 
 // ========================================
-// 境界系统配置
+// 境界系统配置（优先读取 theme/config.js）
 // ========================================
-// 境界列表：从低到高的修炼境界
-const realms = ["练气", "筑基", "金丹", "元婴", "化神"];
-
-// 境界名称映射表：索引对应境界名称
-const realmNames = {
-    0: "练气",   // 第一境界：练气期，修炼基础
-    1: "筑基",   // 第二境界：筑基期，打好根基
-    2: "金丹",   // 第三境界：金丹期，凝聚金丹
-    3: "元婴",   // 第四境界：元婴期，孕育元婴
-    4: "化神"    // 第五境界：化神期，神魂合一
-};
+const _themeRealms = (window.GAME_THEME && window.GAME_THEME.realms) || ["练气", "筑基", "金丹", "元婴", "化神"];
+const realms = _themeRealms;
+const realmNames = {};
+_themeRealms.forEach((name, index) => { realmNames[index] = name; });
 
 const pillInfo = [
     { type: 'attack', name: '天元丹', effect: '攻击', value: 1, isPercent: false },
@@ -4632,7 +4626,14 @@ function processOfflineRewards(playerData, returnOnly = false, forceOfflineSecon
     // 显示离线奖励弹窗或返回结果
     // ========================================
     if (returnOnly) {
+        if (typeof MetaSystems !== 'undefined' && effectiveOfflineSeconds >= 3600) {
+            MetaSystems.onOfflineReturn(effectiveOfflineSeconds);
+        }
         return { rewards, effectiveOfflineSeconds, battleStats, autoCollectNeitiandi: playerData.autoCollectNeitiandi };
+    }
+    
+    if (typeof MetaSystems !== 'undefined' && effectiveOfflineSeconds >= 3600) {
+        MetaSystems.onOfflineReturn(effectiveOfflineSeconds);
     }
     
     // 显示离线奖励
@@ -6319,6 +6320,7 @@ function doBreakthrough() {
     const nextRealm = realmNames[player.realmIndex + 1] || '炼虚';
     
     const performBreakthrough = () => {
+        if (typeof MetaSystems !== 'undefined') MetaSystems.onBreakthroughAttempt();
         if (!$gteBig(player.cultivation, String(required))) {
             player.canBreakthrough = false;
             updateCultivationUI();
@@ -6342,6 +6344,7 @@ function doBreakthrough() {
             updateStatusUI();
             updateCharacterTagUI();
             saveGameData();
+            if (typeof MetaSystems !== 'undefined') MetaSystems.onBreakthroughSuccess(player.realmIndex);
             if (successRateNum < 1) {
                 const newRealm = realmNames[player.realmIndex] || '练气';
                 showResultModal(true, `恭喜！突破成功，进入 ${newRealm} 境界！`);
@@ -11764,10 +11767,16 @@ function endBattle(playerWon, isTimeout = false) {
         addBattleLog(`[战斗] 你击败了 ${battleState.currentMonster}！`);
         
         const currentMapNum = battleState.currentMap;
-        if (!player.unlockedMaps.includes(currentMapNum)) {
+        const wasUnlocked = player.unlockedMaps.includes(currentMapNum);
+        if (!wasUnlocked) {
             player.unlockedMaps.push(currentMapNum);
             player.unlockedMaps.sort((a, b) => a - b);
             addBattleLog(`[系统] 地图${currentMapNum} ${mapNames[currentMapNum - 1]} 已解锁！`);
+            if (typeof MetaSystems !== 'undefined') MetaSystems.onMapUnlock(currentMapNum);
+        }
+        
+        if (typeof MetaSystems !== 'undefined') {
+            MetaSystems.onBattleWin(battleState.monsters ? battleState.monsters.length : 1);
         }
         
         addBattleLog(`[系统] 战斗胜利！`);
@@ -11810,6 +11819,7 @@ function endBattle(playerWon, isTimeout = false) {
                 player.yunLing.talent1.atkBonus = newAtkBonus;
                 player.yunLing.talent1.defBonus = newDefBonus;
             }
+            if (typeof MetaSystems !== 'undefined') MetaSystems.onYunLingXianYuan();
         }
         
         // 虚空模式胜利处理
@@ -17481,6 +17491,7 @@ function endFanXuLuBattle(playerWon) {
         const currentFloor = fanXuLuBattleState.currentFloor;
         const nextFloor = currentFloor + 1;
         setFanXuLuFloor(nextFloor);
+        if (typeof MetaSystems !== 'undefined') MetaSystems.onFanXuClear(currentFloor);
         
         addFanXuLuBattleLog(`[胜利] 击败第${currentFloor}层镜像！进入第${nextFloor}层！`);
         
@@ -20893,6 +20904,7 @@ function doAlchemy() {
             <br><br>
             <button onclick="closeModal();updateAlchemyUI();updateBagUI();saveGameData();" class="sbtn">确定</button>
         `, true);
+        if (typeof MetaSystems !== 'undefined') MetaSystems.onAlchemySuccess();
     } else {
         player.alchemyFurnace = [null, null, null, null, null, null, null, null, null];
         
@@ -22900,6 +22912,7 @@ window.addEventListener('DOMContentLoaded', function() {
     updateAutoSettingsUI();
     applyBackgroundImage();
     initCharacterTagUI();
+    if (typeof MetaSystems !== 'undefined') MetaSystems.init();
     
     setTimeout(() => {
         const isNewCharacter = !player.name || player.name === '无名' || player.name === '角色名称';
