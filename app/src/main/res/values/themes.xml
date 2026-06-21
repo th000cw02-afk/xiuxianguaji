@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.XiuxianGuaji" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- 设置状态栏背景为黑色 -->
+        <item name="android:statusBarColor">#000000</item>
+        <!-- 设置导航栏背景为黑色 -->
+        <item name="android:navigationBarColor">#000000</item>
+        <!-- 设置状态栏文字为白色 -->
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>
