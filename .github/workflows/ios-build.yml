@@ -52,9 +52,11 @@ jobs:
           APP_PATH=$(find build -name 'App.app' -type d | head -n 1)
           if [ -z "$APP_PATH" ]; then
             echo "App.app not found"
+            find build -type d | head -50
             exit 1
           fi
-          echo "path=$APP_PATH" >> "$GITHUB_OUTPUT"
+          echo "path=ios/App/$APP_PATH" >> "$GITHUB_OUTPUT"
+          echo "Found app at ios/App/$APP_PATH"
 
       - name: Upload Simulator app
         uses: actions/upload-artifact@v4
