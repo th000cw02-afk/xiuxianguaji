@@ -36,11 +36,14 @@ jobs:
           xcodebuild \
             -workspace App.xcworkspace \
             -scheme App \
-            -configuration Release \
-            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -sdk iphonesimulator \
+            -configuration Debug \
             -derivedDataPath build \
             CODE_SIGNING_ALLOWED=NO \
+            ONLY_ACTIVE_ARCH=NO \
             build
+        env:
+          NSUnbufferedIO: "YES"
 
       - name: Locate Simulator app bundle
         id: app_path
