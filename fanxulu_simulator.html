@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>返虚路战斗模拟器</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        h1 {
+            text-align: center;
+            color: #ff0;
+            margin-bottom: 20px;
+        }
+        .settings {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .setting-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .setting-item label {
+            display: block;
+            margin-bottom: 8px;
+            color: #aaa;
+        }
+        .setting-item input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background: #222;
+            color: #fff;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .setting-item input:focus {
+            outline: none;
+            border-color: #ff0;
+        }
+        .btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+        .btn-start {
+            background: linear-gradient(135deg, #2a8f2a, #3cb843);
+            color: #fff;
+        }
+        .btn-start:hover {
+            background: linear-gradient(135deg, #3cb843, #4dc954);
+        }
+        .btn-start:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+        .results {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .result-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+        }
+        .result-item .value {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .result-item .label {
+            color: #888;
+            font-size: 14px;
+        }
+        .win-rate {
+            color: #0f0;
+        }
+        .lose-rate {
+            color: #f66;
+        }
+        .timeout-rate {
+            color: #ff0;
+        }
+        .progress {
+            width: 100%;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #2a8f2a, #3cb843);
+            transition: width 0.1s;
+            width: 0%;
+        }
+        .stats {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #888;
+        }
+        .stats div {
+            margin: 5px 0;
+        }
+        .formula {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+        .formula h3 {
+            color: #ff0;
+            margin-bottom: 10px;
+        }
+        .formula span {
+            color: #0af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>返虚路战斗模拟器</h1>
+        
+        <div class="settings">
+            <div class="setting-item">
+                <label>层数 (气运值 = 层数)</label>
+                <input type="number" id="floor" value="1" min="1" max="100">
+            </div>
+            <div class="setting-item">
+                <label>模拟次数</label>
+                <input type="number" id="simCount" value="100000" min="100" max="1000000">
+            </div>
+        </div>
+        
+        <button class="btn btn-start" id="startBtn" onclick="startSimulation()">开始模拟</button>
+        
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="results">
+            <div class="result-grid">
+                <div class="result-item">
+                    <div class="label">胜利次数</div>
+                    <div class="value win-rate" id="winCount">0</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">失败次数</div>
+                    <div class="value lose-rate" id="loseCount">0</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">超时次数</div>
+                    <div class="value timeout-rate" id="timeoutCount">0</div>
+                </div>
+            </div>
+            <div class="result-grid">
+                <div class="result-item">
+                    <div class="label">胜率</div>
+                    <div class="value win-rate" id="winRate">0%</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">平均回合数</div>
+                    <div class="value" id="avgRounds">0</div>
+                </div>
+                <div class="result-item">
+                    <div class="label">平均剩余血量</div>
+                    <div class="value" id="avgHp">0</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div>模拟耗时: <span id="timeCost">0</span> ms</div>
+            <div>每秒模拟: <span id="simPerSec">0</span> 次</div>
+        </div>
+        
+        <div class="formula">
+            <h3>战斗参数</h3>
+            <div>攻击伤害: <span>1-10 随机</span></div>
+            <div>回血量: <span>1-10 随机</span></div>
+            <div>暴击率: <span>20%</span> | 暴击伤害: <span>200%</span></div>
+            <div>闪避率: <span>20%</span> | 攻击恢复概率: <span>20%</span></div>
+            <div>攻击出手率: <span>80%</span> (20%概率跳过回合)</div>
+            <div>出手顺序: 主角(0ms) → 镜像(100ms) → 主角(200ms) → 镜像(300ms)...</div>
+            <div>镜像血量: <span>179 + 层数</span> (第1层=180, 第2层=181...)</div>
+            <h3>气运影响 (层数 = 气运值)</h3>
+            <div>双方都不受气运影响，使用原生 <span>Math.random()</span></div>
+        </div>
+    </div>
+
+    <script>
+        function getFanXuLuMirrorHp(floor) {
+            return 179 + floor;
+        }
+        
+        function simulateBattle(floor) {
+            const playerHp = 100;
+            const mirrorHp = getFanXuLuMirrorHp(floor);
+            
+            const ATTACK_CHANCE = 0.8;
+            const CRIT_RATE = 0.2;
+            const CRIT_DAMAGE = 2;
+            const DODGE_CHANCE = 0.2;
+            const HEAL_CHANCE = 0.2;
+            
+            let currentPlayerHp = playerHp;
+            let currentMirrorHp = mirrorHp;
+            let playerDead = false;
+            let mirrorDead = false;
+            
+            const playerInterval = 200;
+            const mirrorInterval = 200;
+            let playerNextAttack = 0;
+            let mirrorNextAttack = 100;
+            
+            const maxBattleTime = 60000;
+            const maxActions = 200;
+            let actionCount = 0;
+            
+            while (!playerDead && !mirrorDead && actionCount < maxActions) {
+                actionCount++;
+                
+                const minTime = Math.min(
+                    playerDead ? Infinity : playerNextAttack,
+                    mirrorDead ? Infinity : mirrorNextAttack
+                );
+                
+                if (minTime > maxBattleTime) {
+                    return { result: 'timeout', rounds: actionCount };
+                }
+                
+                const playerTurn = !playerDead && playerNextAttack === minTime;
+                const mirrorTurn = !mirrorDead && mirrorNextAttack === minTime;
+                
+                if (playerTurn) {
+                    let skipTurn = false;
+                    const skipRoll = Math.random();
+                    if (skipRoll > ATTACK_CHANCE) skipTurn = true;
+                    
+                    if (!skipTurn) {
+                        let heal = 0;
+                        const healRoll = Math.random();
+                        if (healRoll < HEAL_CHANCE) {
+                            heal = Math.floor(Math.random() * 10) + 1;
+                            currentPlayerHp = Math.min(playerHp, currentPlayerHp + heal);
+                        }
+                        
+                        let damage = Math.floor(Math.random() * 10) + 1;
+                        let crit = false;
+                        const critRoll = Math.random();
+                        if (critRoll < CRIT_RATE) {
+                            crit = true;
+                            damage = Math.floor(damage * CRIT_DAMAGE);
+                        }
+                        
+                        let dodged = false;
+                        const dodgeRoll = Math.random();
+                        if (dodgeRoll < DODGE_CHANCE) {
+                            dodged = true;
+                        }
+                        
+                        if (!dodged) {
+                            currentMirrorHp -= damage;
+                            if (currentMirrorHp <= 0) {
+                                currentMirrorHp = 0;
+                                mirrorDead = true;
+                            }
+                        }
+                    }
+                    playerNextAttack += playerInterval;
+                }
+                
+                if (mirrorTurn) {
+                    let skipTurn = false;
+                    const skipRoll = Math.random();
+                    if (skipRoll > ATTACK_CHANCE) skipTurn = true;
+                    
+                    if (!skipTurn) {
+                        let heal = 0;
+                        const healRoll = Math.random();
+                        if (healRoll < HEAL_CHANCE) {
+                            heal = Math.floor(Math.random() * 10) + 1;
+                            currentMirrorHp = Math.min(mirrorHp, currentMirrorHp + heal);
+                        }
+                        
+                        let damage = Math.floor(Math.random() * 10) + 1;
+                        let crit = false;
+                        const critRoll = Math.random();
+                        if (critRoll < CRIT_RATE) {
+                            crit = true;
+                            damage = Math.floor(damage * CRIT_DAMAGE);
+                        }
+                        
+                        let dodged = false;
+                        const dodgeRoll = Math.random();
+                        if (dodgeRoll < DODGE_CHANCE) {
+                            dodged = true;
+                        }
+                        
+                        if (!dodged) {
+                            currentPlayerHp -= damage;
+                            if (currentPlayerHp <= 0) {
+                                currentPlayerHp = 0;
+                                playerDead = true;
+                            }
+                        }
+                    }
+                    mirrorNextAttack += mirrorInterval;
+                }
+            }
+            
+            if (actionCount >= maxActions) {
+                return { result: 'timeout', rounds: actionCount };
+            }
+            
+            const playerWon = mirrorDead && !playerDead;
+            return { 
+                result: playerWon ? 'win' : 'lose', 
+                rounds: actionCount,
+                remainingHp: currentPlayerHp
+            };
+        }
+        
+        async function startSimulation() {
+            const startBtn = document.getElementById('startBtn');
+            const progressBar = document.getElementById('progressBar');
+            
+            const floor = parseInt(document.getElementById('floor').value) || 1;
+            const simCount = parseInt(document.getElementById('simCount').value) || 100000;
+            const mirrorHp = getFanXuLuMirrorHp(floor);
+            
+            startBtn.disabled = true;
+            startBtn.textContent = '模拟中...';
+            
+            document.getElementById('avgHp').textContent = `主角100 vs 镜像${mirrorHp}`;
+            
+            let wins = 0;
+            let loses = 0;
+            let timeouts = 0;
+            let totalRounds = 0;
+            let totalRemainingHp = 0;
+            
+            const startTime = performance.now();
+            
+            const batchSize = 1000;
+            let completed = 0;
+            
+            for (let i = 0; i < simCount; i += batchSize) {
+                const end = Math.min(i + batchSize, simCount);
+                
+                for (let j = i; j < end; j++) {
+                    const result = simulateBattle(floor);
+                    
+                    if (result.result === 'win') {
+                        wins++;
+                        totalRemainingHp += result.remainingHp;
+                    } else if (result.result === 'lose') {
+                        loses++;
+                    } else {
+                        timeouts++;
+                    }
+                    totalRounds += result.rounds;
+                }
+                
+                completed = end;
+                const progress = (completed / simCount) * 100;
+                progressBar.style.width = progress + '%';
+                
+                if (completed % 10000 === 0 || completed === simCount) {
+                    document.getElementById('winCount').textContent = wins;
+                    document.getElementById('loseCount').textContent = loses;
+                    document.getElementById('timeoutCount').textContent = timeouts;
+                    document.getElementById('winRate').textContent = (wins / completed * 100).toFixed(2) + '%';
+                    document.getElementById('avgRounds').textContent = (totalRounds / completed).toFixed(1);
+                    if (wins > 0) {
+                        document.getElementById('avgHp').textContent = (totalRemainingHp / wins).toFixed(1);
+                    }
+                    
+                    await new Promise(r => setTimeout(r, 0));
+                }
+            }
+            
+            const endTime = performance.now();
+            const timeCost = endTime - startTime;
+            
+            document.getElementById('timeCost').textContent = timeCost.toFixed(0);
+            document.getElementById('simPerSec').textContent = Math.round(simCount / (timeCost / 1000));
+            
+            startBtn.disabled = false;
+            startBtn.textContent = '开始模拟';
+        }
+    </script>
+</body>
+</html>
