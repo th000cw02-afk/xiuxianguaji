@@ -1,0 +1,14 @@
+{
+	"appId": "com.idle.wenzixiuxian",
+	"appName": "修仙挂机",
+	"webDir": "www",
+	"server": {
+		"androidScheme": "https"
+	},
+	"ios": {
+		"contentInset": "automatic"
+	},
+	"packageClassList": [
+		"NativeBridgePlugin"
+	]
+}
