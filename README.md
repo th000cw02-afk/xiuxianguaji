@@ -70,13 +70,16 @@ npm run ios:open    # Mac 上打开 Xcode
 | [ROADMAP](docs/ROADMAP.md) | 版本规划 |
 | [BUILD](docs/BUILD.md) | 编译与环境 |
 | [ARCHITECTURE](docs/ARCHITECTURE.md) | 架构说明 |
+| [随机数说明](docs/随机数说明文档.md) | 气运与随机数设计 |
 | [游戏说明.txt](app/src/main/assets/游戏说明.txt) | 公式与机制 |
+| [CONTRIBUTING](CONTRIBUTING.md) | 如何参与贡献 |
 
 ## 开源
 
-MIT License — 详见 [LICENSE](LICENSE)。第三方：[math.js](https://github.com/josdejong/mathjs) (Apache 2.0)。
+MIT License — Copyright (c) 2026 tower。详见 [LICENSE](LICENSE)。第三方：[math.js](https://github.com/josdejong/mathjs) (Apache 2.0)。
 
 ## 联系
 
 - 邮箱：qa@live.cn
 - Issues：[th000cw02-afk/xiuxianguaji](https://github.com/th000cw02-afk/xiuxianguaji/issues)
+- 贡献：[CONTRIBUTING.md](CONTRIBUTING.md)

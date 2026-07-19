@@ -82,10 +82,10 @@ assets/
 | [ARCHITECTURE.md](ARCHITECTURE.md) | 架构与 meta-systems |
 | [BUILD.md](BUILD.md) | 编译与环境配置 |
 | [游戏说明.txt](../app/src/main/assets/游戏说明.txt) | 游戏机制与公式 |
-| [随机数说明文档.md](../随机数说明文档.md) | 气运系数与随机数设计 |
-| [Math.random使用情况分析.md](../Math.random使用情况分析.md) | 随机数调用分析 |
-| [右界判断问题分析.md](../右界判断问题分析.md) | 边界判断问题记录 |
+| [随机数说明文档.md](随机数说明文档.md) | 气运系数与随机数设计 |
+| [Math.random使用情况分析.md](Math.random使用情况分析.md) | 随机数调用分析 |
+| [右界判断问题分析.md](右界判断问题分析.md) | 边界判断问题记录 |
 
 ## 贡献
 
-欢迎提交 Issue 与 Pull Request。Fork → 特性分支 → 提交 PR。详见根目录 [README.md](../README.md)。
+欢迎提交 Issue 与 Pull Request。详见根目录 [CONTRIBUTING.md](../CONTRIBUTING.md)。

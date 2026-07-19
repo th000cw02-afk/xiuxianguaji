@@ -27,15 +27,18 @@ android {
     }
 
     signingConfigs {
-        create("release") {
-            val storeFileProp = keystoreProperties.getProperty("storeFile")
-            storeFile = file(
-                if (storeFileProp != null) rootProject.file(storeFileProp)
-                else rootProject.file("keystore.jks")
-            )
-            storePassword = keystoreProperties.getProperty("storePassword") ?: "123456789"
-            keyAlias = keystoreProperties.getProperty("keyAlias") ?: "duohangjisuanqi"
-            keyPassword = keystoreProperties.getProperty("keyPassword") ?: "123456789"
+        if (keystorePropertiesFile.exists()) {
+            create("release") {
+                val storeFileProp = keystoreProperties.getProperty("storeFile")
+                    ?: error("keystore.properties 缺少 storeFile")
+                storeFile = rootProject.file(storeFileProp)
+                storePassword = keystoreProperties.getProperty("storePassword")
+                    ?: error("keystore.properties 缺少 storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                    ?: error("keystore.properties 缺少 keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+                    ?: error("keystore.properties 缺少 keyPassword")
+            }
         }
     }
 
@@ -50,7 +53,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             
             // 禁用调试功能
             buildConfigField("boolean", "DEBUG_MODE", "false")
@@ -66,9 +71,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             
-            // 调试版本也使用发布版配置
+            // 有 keystore.properties 时与 release 同签；否则使用默认 debug 签名
             buildConfigField("boolean", "DEBUG_MODE", "false")
         }
     }

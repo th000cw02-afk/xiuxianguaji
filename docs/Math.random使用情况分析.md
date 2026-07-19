@@ -1,4 +1,4 @@
-# Math.random() 使用情况分析文档
+﻿# Math.random() 使用情况分析文档
 
 > **说明**：本文档列出所有使用 `Math.random()` 的地方（受气运影响的随机数）
 > 
@@ -13,7 +13,7 @@
 ## 一、概率判定类（直接使用随机数）
 
 ### 1. 时间结晶掉落判定
-**位置**：[game.js:1799](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L1799)
+**位置**：[game.js:1799](../app/src/main/assets/game.js#L1799)
 ```javascript
 if (Math.random() < fracPart) {
     return intPart + 1;
@@ -27,7 +27,7 @@ if (Math.random() < fracPart) {
 ---
 
 ### 2. 境界突破成功率判定
-**位置**：[game.js:6160](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L6160)
+**位置**：[game.js:6160](../app/src/main/assets/game.js#L6160)
 ```javascript
 if (Math.random() < successRateNum) {
     player.level += 1;
@@ -42,7 +42,7 @@ if (Math.random() < successRateNum) {
 ---
 
 ### 3. 灵石掉落判定
-**位置**：[game.js:10743](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L10743)
+**位置**：[game.js:10743](../app/src/main/assets/game.js#L10743)
 ```javascript
 if (Math.random() < 0.01) {
     // 获得灵石
@@ -56,7 +56,7 @@ if (Math.random() < 0.01) {
 ---
 
 ### 4. 仙石掉落判定
-**位置**：[game.js:10749](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L10749)
+**位置**：[game.js:10749](../app/src/main/assets/game.js#L10749)
 ```javascript
 if (Math.random() < 0.0002) {
     // 获得仙石
@@ -70,7 +70,7 @@ if (Math.random() < 0.0002) {
 ---
 
 ### 5. 法则碎片掉落判定
-**位置**：[game.js:10759](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L10759)
+**位置**：[game.js:10759](../app/src/main/assets/game.js#L10759)
 ```javascript
 if (Math.random() < 0.05) {
     // 获得法则碎片
@@ -84,7 +84,7 @@ if (Math.random() < 0.05) {
 ---
 
 ### 6. 仙草掉落判定
-**位置**：[game.js:10768](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L10768)
+**位置**：[game.js:10768](../app/src/main/assets/game.js#L10768)
 ```javascript
 if (Math.random() < 0.01) {
     // 获得仙草
@@ -98,7 +98,7 @@ if (Math.random() < 0.01) {
 ---
 
 ### 7. 时间结晶掉落判定（普通战斗）
-**位置**：[game.js:10798](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L10798)
+**位置**：[game.js:10798](../app/src/main/assets/game.js#L10798)
 ```javascript
 if (Math.random() < 1/6000) {
     // 获得时间结晶
@@ -112,7 +112,7 @@ if (Math.random() < 1/6000) {
 ---
 
 ### 8. 技能传承概率判定
-**位置**：[game.js:13564](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L13564)
+**位置**：[game.js:13564](../app/src/main/assets/game.js#L13564)
 ```javascript
 if (unit.skills && unit.skills.length > 0 && Math.random() < 0.2) {
     // 技能传承
@@ -126,7 +126,7 @@ if (unit.skills && unit.skills.length > 0 && Math.random() < 0.2) {
 ---
 
 ### 9. 玩家出手概率判定
-**位置**：[game.js:14480](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L14480)
+**位置**：[game.js:14480](../app/src/main/assets/game.js#L14480)
 ```javascript
 if (Math.random() < actChance) {
     // 玩世界探索玩家出手
@@ -140,7 +140,7 @@ if (Math.random() < actChance) {
 ---
 
 ### 10. 敌人出手概率判定（反向）
-**位置**：[game.js:14506](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L14506)
+**位置**：[game.js:14506](../app/src/main/assets/game.js#L14506)
 ```javascript
 if (Math.random() >= (1 - actChance)) {
     // 敌人出手
@@ -154,7 +154,7 @@ if (Math.random() >= (1 - actChance)) {
 ---
 
 ### 11. 玩家出手概率判定（另一处）
-**位置**：[game.js:14608](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L14608)
+**位置**：[game.js:14608](../app/src/main/assets/game.js#L14608)
 ```javascript
 if (Math.random() < actChance) {
     // 玩世界探索玩家出手
@@ -168,7 +168,7 @@ if (Math.random() < actChance) {
 ---
 
 ### 12. 敌人出手概率判定（反向，另一处）
-**位置**：[game.js:14620](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L14620)
+**位置**：[game.js:14620](../app/src/main/assets/game.js#L14620)
 ```javascript
 if (Math.random() >= (1 - actChance)) {
     // 敌人出手
@@ -182,7 +182,7 @@ if (Math.random() >= (1 - actChance)) {
 ---
 
 ### 13. 炼丹成功率判定
-**位置**：[game.js:19754](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L19754)
+**位置**：[game.js:19754](../app/src/main/assets/game.js#L19754)
 ```javascript
 const isSuccess = Math.random() < successRate;
 ```
@@ -194,7 +194,7 @@ const isSuccess = Math.random() < successRate;
 ---
 
 ### 14. 批量炼丹成功率判定
-**位置**：[game.js:19855](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L19855)
+**位置**：[game.js:19855](../app/src/main/assets/game.js#L19855)
 ```javascript
 const isSuccess = Math.random() < successRate;
 ```
@@ -206,7 +206,7 @@ const isSuccess = Math.random() < successRate;
 ---
 
 ### 15. 炼丹成功率判定（另一处）
-**位置**：[game.js:20338](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L20338)
+**位置**：[game.js:20338](../app/src/main/assets/game.js#L20338)
 ```javascript
 const isSuccess = Math.random() < successRate;
 ```
@@ -220,7 +220,7 @@ const isSuccess = Math.random() < successRate;
 ## 二、随机值生成类（用于计算）
 
 ### 16. 灵药阶位计算
-**位置**：[game.js:1974](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L1974)
+**位置**：[game.js:1974](../app/src/main/assets/game.js#L1974)
 ```javascript
 const r = Math.random();
 if (r === 0) return 0;
@@ -234,7 +234,7 @@ const logR = parseFloat((-Math.log10(r)).toFixed(1));
 ---
 
 ### 17. 批量灵药阶位计算
-**位置**：[game.js:1995](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L1995)
+**位置**：[game.js:1995](../app/src/main/assets/game.js#L1995)
 ```javascript
 const r = Math.random();
 if (r === 0) continue;
@@ -248,7 +248,7 @@ const logR = parseFloat((-Math.log10(r)).toFixed(1));
 ---
 
 ### 18. 仙草阶位计算
-**位置**：[game.js:10774](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L10774)
+**位置**：[game.js:10774](../app/src/main/assets/game.js#L10774)
 ```javascript
 const r = Math.random();
 const grade = calcHerbGrade(monsterLevel);
@@ -261,7 +261,7 @@ const grade = calcHerbGrade(monsterLevel);
 ---
 
 ### 19. 技能数量判定
-**位置**：[game.js:13486](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L13486)
+**位置**：[game.js:13486](../app/src/main/assets/game.js#L13486)
 ```javascript
 const rand = Math.random() * 100;
 if (rand < 13) return 1;
@@ -276,7 +276,7 @@ if (rand < 25) return 2;
 ---
 
 ### 20. 技能数值生成（世界探索）
-**位置**：[game.js:13504](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L13504)
+**位置**：[game.js:13504](../app/src/main/assets/game.js#L13504)
 ```javascript
 const rand = Math.random();
 // 例如：values.healPercent = isEnemy ? Math.floor(50 + rand * 150) : randomStep(50, 200);
@@ -291,7 +291,7 @@ const rand = Math.random();
 ---
 
 ### 21. 技能数值生成（环世界）
-**位置**：[game.js:13921](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L13921)
+**位置**：[game.js:13921](../app/src/main/assets/game.js#L13921)
 ```javascript
 const rand = Math.random();
 // 例如：values.healPercent = isEnemy ? Math.floor(50 + rand * 150) : Math.floor(200 - rand * 150);
@@ -306,7 +306,7 @@ const rand = Math.random();
 ---
 
 ### 22. 技能数值生成（环世界另一处）
-**位置**：[game.js:14861](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L14861)
+**位置**：[game.js:14861](../app/src/main/assets/game.js#L14861)
 ```javascript
 const rand = Math.random();
 // 例如：values.healPercent = Math.floor(200 - rand * 150);
@@ -319,7 +319,7 @@ const rand = Math.random();
 ---
 
 ### 23. 怪物属性波动
-**位置**：[game.js:9401](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L9401)
+**位置**：[game.js:9401](../app/src/main/assets/game.js#L9401)
 ```javascript
 const fluctuationLevels = [0.85, 0.90, 0.95, 1.00, 1.05, 1.10, 1.15];
 const fluctuation = fluctuationLevels[Math.floor(Math.random() * fluctuationLevels.length)];
@@ -332,7 +332,7 @@ const fluctuation = fluctuationLevels[Math.floor(Math.random() * fluctuationLeve
 ---
 
 ### 24. 怪物技能数量
-**位置**：[game.js:9459](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L9459)
+**位置**：[game.js:9459](../app/src/main/assets/game.js#L9459)
 ```javascript
 const numSkills = 2 + $floor(Math.random() * 2);
 ```
@@ -344,7 +344,7 @@ const numSkills = 2 + $floor(Math.random() * 2);
 ---
 
 ### 25. 敌人数量
-**位置**：[game.js:13884](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L13884)
+**位置**：[game.js:13884](../app/src/main/assets/game.js#L13884)
 ```javascript
 enemyCount: Math.floor(9000 - Math.random() * 3001),
 ```
@@ -356,7 +356,7 @@ enemyCount: Math.floor(9000 - Math.random() * 3001),
 ---
 
 ### 26. 额外等级增益
-**位置**：[game.js:17773](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L17773)
+**位置**：[game.js:17773](../app/src/main/assets/game.js#L17773)
 ```javascript
 const baseExtraLevelGain = Math.max(1, Math.floor(Math.random() * maxGain) + 1);
 ```
@@ -368,7 +368,7 @@ const baseExtraLevelGain = Math.max(1, Math.floor(Math.random() * maxGain) + 1);
 ---
 
 ### 27. 随机偏移（浮动数字显示）
-**位置**：[game.js:16352](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L16352)
+**位置**：[game.js:16352](../app/src/main/assets/game.js#L16352)
 ```javascript
 const randomOffset = Math.floor(Math.random() * 30) - 15;
 ```
@@ -382,7 +382,7 @@ const randomOffset = Math.floor(Math.random() * 30) - 15;
 ## 三、随机索引选择类
 
 ### 28. 怪物索引选择（fallback）
-**位置**：[game.js:9389](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L9389)
+**位置**：[game.js:9389](../app/src/main/assets/game.js#L9389)
 ```javascript
 const monsterIndex = Math.floor(Math.random() * fallbackMonsters.length);
 ```
@@ -394,7 +394,7 @@ const monsterIndex = Math.floor(Math.random() * fallbackMonsters.length);
 ---
 
 ### 29. 怪物索引选择
-**位置**：[game.js:9393](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L9393)
+**位置**：[game.js:9393](../app/src/main/assets/game.js#L9393)
 ```javascript
 const monsterIndex = Math.floor(Math.random() * mapMonsters.length);
 ```
@@ -406,7 +406,7 @@ const monsterIndex = Math.floor(Math.random() * mapMonsters.length);
 ---
 
 ### 30. 技能选择（传承）
-**位置**：[game.js:13569](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L13569)
+**位置**：[game.js:13569](../app/src/main/assets/game.js#L13569)
 ```javascript
 const skillToInherit = inheritableSkills[Math.floor(Math.random() * inheritableSkills.length)];
 ```
@@ -418,7 +418,7 @@ const skillToInherit = inheritableSkills[Math.floor(Math.random() * inheritableS
 ---
 
 ### 31. 目标单位选择（传承）
-**位置**：[game.js:13570](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L13570)
+**位置**：[game.js:13570](../app/src/main/assets/game.js#L13570)
 ```javascript
 const targetUnit = aliveAllies[Math.floor(Math.random() * aliveAllies.length)];
 ```
@@ -430,7 +430,7 @@ const targetUnit = aliveAllies[Math.floor(Math.random() * aliveAllies.length)];
 ---
 
 ### 32. 攻击目标选择
-**位置**：[game.js:14692](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L14692)
+**位置**：[game.js:14692](../app/src/main/assets/game.js#L14692)
 ```javascript
 const target = targets[Math.floor(Math.random() * targets.length)];
 ```
@@ -442,7 +442,7 @@ const target = targets[Math.floor(Math.random() * targets.length)];
 ---
 
 ### 33. 随机索引选择（通用）
-**位置**：[game.js:3011](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L3011)
+**位置**：[game.js:3011](../app/src/main/assets/game.js#L3011)
 ```javascript
 const randomIndex = Math.floor(Math.random() * list.length);
 ```
@@ -454,7 +454,7 @@ const randomIndex = Math.floor(Math.random() * list.length);
 ---
 
 ### 34. 随机索引选择（另一处）
-**位置**：[game.js:18791](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L18791)
+**位置**：[game.js:18791](../app/src/main/assets/game.js#L18791)
 ```javascript
 const randomIndex = Math.floor(Math.random() * list.length);
 ```
@@ -468,7 +468,7 @@ const randomIndex = Math.floor(Math.random() * list.length);
 ## 四、特殊用途类
 
 ### 35. 随机数组生成
-**位置**：[game.js:9495](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L9495)
+**位置**：[game.js:9495](../app/src/main/assets/game.js#L9495)
 ```javascript
 const randomArray = Array.from({length: 1000}, () => Math.random());
 ```
@@ -480,7 +480,7 @@ const randomArray = Array.from({length: 1000}, () => Math.random());
 ---
 
 ### 36. 获取下一个随机数
-**位置**：[game.js:9622](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L9622)
+**位置**：[game.js:9622](../app/src/main/assets/game.js#L9622)
 ```javascript
 return Math.random();
 ```
@@ -493,12 +493,12 @@ return Math.random();
 
 ### 37. 波动选择（多处）
 **位置**：
-- [game.js:13981](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L13981)
-- [game.js:14921](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L14921)
-- [game.js:15511](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L15511)
-- [game.js:15587](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L15587)
-- [game.js:15630](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L15630)
-- [game.js:15674](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L15674)
+- [game.js:13981](../app/src/main/assets/game.js#L13981)
+- [game.js:14921](../app/src/main/assets/game.js#L14921)
+- [game.js:15511](../app/src/main/assets/game.js#L15511)
+- [game.js:15587](../app/src/main/assets/game.js#L15587)
+- [game.js:15630](../app/src/main/assets/game.js#L15630)
+- [game.js:15674](../app/src/main/assets/game.js#L15674)
 
 ```javascript
 const fluctuation = fluctuationLevels[Math.floor(Math.random() * fluctuationLevels.length)];
@@ -511,7 +511,7 @@ const fluctuation = fluctuationLevels[Math.floor(Math.random() * fluctuationLeve
 ---
 
 ### 38. randomStep函数
-**位置**：[game.js:99](file:///c:/Users/zhuyue/Desktop/xiuxianguaji/app/src/main/assets/game.js#L99)
+**位置**：[game.js:99](../app/src/main/assets/game.js#L99)
 ```javascript
 function randomStep(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -550,4 +550,4 @@ function randomStep(min, max) {
 ---
 
 **文档生成时间**：2026-05-16
-**文件路径**：`c:\Users\zhuyue\Desktop\xiuxianguaji\app\src\main\assets\game.js`
+**文件路径**：`../app/src/main/assets/game.js`
