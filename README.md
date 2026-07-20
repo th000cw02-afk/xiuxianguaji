@@ -78,8 +78,4 @@ npm run ios:open    # Mac 上打开 Xcode
 
 MIT License — Copyright (c) 2026 tower。详见 [LICENSE](LICENSE)。第三方：[math.js](https://github.com/josdejong/mathjs) (Apache 2.0)。
 
-## 联系
-
-- 邮箱：qa@live.cn
-- Issues：[th000cw02-afk/xiuxianguaji](https://github.com/th000cw02-afk/xiuxianguaji/issues)
-- 贡献：[CONTRIBUTING.md](CONTRIBUTING.md)
+问题与贡献请通过 [Issues](https://github.com/th000cw02-afk/xiuxianguaji/issues) 与 [CONTRIBUTING.md](CONTRIBUTING.md)。
